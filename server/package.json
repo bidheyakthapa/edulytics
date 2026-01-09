@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node --watch --env-file .env src/server.js",
+    "dev": "node --watch --env-file .env src/server.js",
+    "migrate": "node --env-file .env src/migrations/init-db.js",
+    "seed": "node --env-file .env src/seed/seedAcademics.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
