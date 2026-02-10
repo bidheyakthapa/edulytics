@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import db from "./db.js";
 import authRoutes from "./routes/auth.route.js";
 import academicsRoutes from "./routes/academics.routes.js";
+import topicsRoutes from "./routes/topics.routes.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/academics", academicsRoutes);
+app.use("/api/topics", topicsRoutes);
 
 const PORT = process.env.PORT || 8080;
 
