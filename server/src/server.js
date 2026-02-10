@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import db from "./db.js";
 import authRoutes from "./routes/auth.route.js";
+import academicsRoutes from "./routes/academics.routes.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/academics", academicsRoutes);
 
 const PORT = process.env.PORT || 8080;
 
