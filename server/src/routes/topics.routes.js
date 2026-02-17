@@ -5,12 +5,13 @@ import {
   getTopics,
   updateTopic,
 } from "../controllers/topics.controller.js";
-import { authMiddleware, requireRole } from "../middleware/auth.js";
+import { authMiddleware } from "../middleware/auth.js";
 import {
   createTopicValidator,
   updateTopicValidator,
 } from "../validators/topics.validator.js";
 import validate from "../middleware/validate.js";
+import { requireRole } from "../middleware/requireRole.js";
 
 const router = express.Router();
 

@@ -199,40 +199,42 @@ export default function TeacherLayout() {
       <div className="mx-auto max-w-7xl px-4 py-6 grid grid-cols-1 md:grid-cols-[260px_1fr] gap-6">
         {/* Sidebar desktop */}
         <aside className="hidden md:block">
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-3">
-            <div className="px-3 py-2 text-xs text-slate-500">
-              Signed in as{" "}
-              <span className="font-medium text-slate-700">{user?.role}</span>
-            </div>
+          <div className="sticky top-[92px]">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-3">
+              <div className="px-3 py-2 text-xs text-slate-500">
+                Signed in as{" "}
+                <span className="font-medium text-slate-700">{user?.role}</span>
+              </div>
 
-            <nav className="mt-2 space-y-1 h-[80vh]">
-              <SidebarLink
-                to="/teacher"
-                label="Dashboard"
-                icon={<MdDashboard />}
-                end
-              />
-              <SidebarLink
-                to="/teacher/topics"
-                label="Topics"
-                icon={<MdTopic />}
-              />
-              <SidebarLink
-                to="/teacher/quizzes"
-                label="Quizzes"
-                icon={<MdOutlineQuiz />}
-              />
-              <SidebarLink
-                to="/teacher/analytics"
-                label="Analytics"
-                icon={<MdAnalytics />}
-              />
-              <SidebarLink
-                to="/teacher/groups"
-                label="Groups"
-                icon={<MdGroups />}
-              />
-            </nav>
+              <nav className="mt-2 space-y-1 h-[81vh] max-h-[calc(100vh-140px)] overflow-auto pr-1">
+                <SidebarLink
+                  to="/teacher"
+                  label="Dashboard"
+                  icon={<MdDashboard />}
+                  end
+                />
+                <SidebarLink
+                  to="/teacher/topics"
+                  label="Topics"
+                  icon={<MdTopic />}
+                />
+                <SidebarLink
+                  to="/teacher/quizzes"
+                  label="Quizzes"
+                  icon={<MdOutlineQuiz />}
+                />
+                <SidebarLink
+                  to="/teacher/analytics"
+                  label="Analytics"
+                  icon={<MdAnalytics />}
+                />
+                <SidebarLink
+                  to="/teacher/groups"
+                  label="Groups"
+                  icon={<MdGroups />}
+                />
+              </nav>
+            </div>
           </div>
         </aside>
 

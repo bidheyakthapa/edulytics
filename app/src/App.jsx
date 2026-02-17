@@ -17,6 +17,7 @@ import TeacherDashboard from "./pages/teacher/Dashboard.jsx";
 import TeacherTopics from "./pages/teacher/Topics.jsx";
 
 import StudentDashboard from "./pages/student/Dashboard.jsx";
+import TeacherQuizzes from "./pages/teacher/Quizzes.jsx";
 
 export default function App() {
   const fetchMe = useAuthStore((s) => s.fetchMe);
@@ -38,7 +39,7 @@ export default function App() {
           <Route path="/teacher" element={<TeacherLayout />}>
             <Route index element={<TeacherDashboard />} />
             <Route path="topics" element={<TeacherTopics />} />
-            <Route path="quizzes" element={<div>Quizzes (coming)</div>} />
+            <Route path="quizzes" element={<TeacherQuizzes />} />
             <Route path="analytics" element={<div>Analytics (coming)</div>} />
             <Route path="groups" element={<div>Groups (coming)</div>} />
           </Route>
