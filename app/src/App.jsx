@@ -18,6 +18,7 @@ import TeacherTopics from "./pages/teacher/Topics.jsx";
 
 import StudentDashboard from "./pages/student/Dashboard.jsx";
 import TeacherQuizzes from "./pages/teacher/Quizzes.jsx";
+import StudentQuizzes from "./pages/student/Quizzes.jsx";
 
 export default function App() {
   const fetchMe = useAuthStore((s) => s.fetchMe);
@@ -49,7 +50,7 @@ export default function App() {
         <Route element={<ProtectedRoute role="STUDENT" />}>
           <Route path="/student" element={<StudentLayout />}>
             <Route index element={<StudentDashboard />} />
-            <Route path="quizzes" element={<div>Quizzes (coming)</div>} />
+            <Route path="quizzes" element={<StudentQuizzes />} />
             <Route path="analysis" element={<div>Analysis (coming)</div>} />
             <Route path="group" element={<div>My Group (coming)</div>} />
           </Route>

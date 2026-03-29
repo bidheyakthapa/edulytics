@@ -31,6 +31,12 @@ export const createTopic = async (req, res) => {
       [semesterId, req.user.id, name.trim()],
     );
 
+    const topicId = result.insertId;
+
+    await db.execute(`INSERT INTO bkt_topic_params (topic_id) VALUES (?)`, [
+      topicId,
+    ]);
+
     return res.status(201).json({
       message: "Topic added successfully",
       id: result.insertId,

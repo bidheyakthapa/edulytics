@@ -14,7 +14,7 @@ const runMigrations = async () => {
   await connection.execute(
     `CREATE DATABASE IF NOT EXISTS \`${dbName}\`
      CHARACTER SET utf8mb4
-     COLLATE utf8mb4_unicode_ci`
+     COLLATE utf8mb4_unicode_ci`,
   );
   console.log(`✅ Database '${dbName}' ready`);
 
@@ -164,10 +164,10 @@ const runMigrations = async () => {
 
   CREATE TABLE IF NOT EXISTS bkt_topic_params (
     topic_id INT PRIMARY KEY,
-    p_l0 DECIMAL(6,5) NOT NULL,
-    p_t  DECIMAL(6,5) NOT NULL,
-    p_s  DECIMAL(6,5) NOT NULL,
-    p_g  DECIMAL(6,5) NOT NULL,
+    p_l0 DECIMAL(6,5) NOT NULL DEFAULT 0.10000,
+    p_t  DECIMAL(6,5) NOT NULL DEFAULT 0.30000,
+    p_s  DECIMAL(6,5) NOT NULL DEFAULT 0.10000,
+    p_g  DECIMAL(6,5) NOT NULL DEFAULT 0.20000,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_bkt_topic FOREIGN KEY (topic_id)
@@ -210,7 +210,7 @@ const runMigrations = async () => {
       REFERENCES semesters(id) ON DELETE RESTRICT
   ) ENGINE=InnoDB;
 
-  CREATE TABLE IF NOT EXISTS groups (
+  CREATE TABLE IF NOT EXISTS project_groups (
     id INT AUTO_INCREMENT PRIMARY KEY,
     project_id INT NOT NULL,
     group_number INT NOT NULL,
@@ -229,7 +229,7 @@ const runMigrations = async () => {
     UNIQUE KEY uq_group_member (group_id, student_id),
 
     CONSTRAINT fk_gm_group FOREIGN KEY (group_id)
-      REFERENCES groups(id) ON DELETE CASCADE,
+      REFERENCES project_groups(id) ON DELETE CASCADE,
     CONSTRAINT fk_gm_student FOREIGN KEY (student_id)
       REFERENCES users(id) ON DELETE CASCADE
   ) ENGINE=InnoDB;

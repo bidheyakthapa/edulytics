@@ -308,10 +308,10 @@ export default function CreateQuiz({
           meta={meta}
           setMeta={setMeta}
           canGoNext={canGoNextFromDetails}
-          onNext={() => {
-            if (structureLocked) return;
-            setStep(2);
-          }}
+          onNext={() => setStep(2)}
+          structureLocked={structureLocked}
+          onSaveMeta={handleSubmit}
+          saving={saving}
         />
       )}
 

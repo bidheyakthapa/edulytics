@@ -30,3 +30,15 @@ export const updateQuizMetaValidator = Joi.object({
   description: Joi.string().allow("").optional(),
   time_limit_sec: Joi.number().integer().min(60).optional(),
 });
+
+export const attemptQuizValidator = Joi.object({
+  answers: Joi.array()
+    .min(1)
+    .items(
+      Joi.object({
+        question_id: Joi.number().required(),
+        selected_option_id: Joi.number().required(),
+      }),
+    )
+    .required(),
+});

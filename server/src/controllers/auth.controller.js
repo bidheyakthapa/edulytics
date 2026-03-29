@@ -148,10 +148,25 @@ export const logout = (req, res) => {
     .json({ message: "Logged out successfully" });
 };
 
-export const me = (req, res) => {
-  res.json({
-    id: req.user.id,
-    role: req.user.role,
-    loggedIn: true,
-  });
+export const me = async (req, res) => {
+  if (req.user.role === "STUDENT") {
+    const [semester] = await db.execute(
+      "SELECT semester_id FROM student_profiles WHERE student_id = ?",
+      [req.user.id],
+    );
+    let semesterId = semester[0].semester_id;
+
+    res.json({
+      id: req.user.id,
+      role: req.user.role,
+      semesterId,
+      loggedIn: true,
+    });
+  } else {
+    res.json({
+      id: req.user.id,
+      role: req.user.role,
+      loggedIn: true,
+    });
+  }
 };
