@@ -7,6 +7,10 @@ import academicsRoutes from "./routes/academics.routes.js";
 import topicsRoutes from "./routes/topics.routes.js";
 import quizzesRoutes from "./routes/quizzes.routes.js";
 import studentQuizzesRoutes from "./routes/studentQuizzes.routes.js";
+import studentAnalysisRoutes from "./routes/studentAnalysis.routes.js";
+import teacherAnalysisRoutes from "./routes/teacherAnalysis.routes.js";
+import groupsRoutes from "./routes/groups.routes.js";
+import dashboardRoutes from "./routes/dashboard.routes.js";
 
 const app = express();
 
@@ -26,6 +30,10 @@ app.use("/api/academics", academicsRoutes);
 app.use("/api/topics", topicsRoutes);
 app.use("/api/quizzes", quizzesRoutes);
 app.use("/api/student/quizzes", studentQuizzesRoutes);
+app.use("/api/student/analysis", studentAnalysisRoutes);
+app.use("/api/analysis", teacherAnalysisRoutes);
+app.use("/api/groups", groupsRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 const PORT = process.env.PORT || 8080;
 

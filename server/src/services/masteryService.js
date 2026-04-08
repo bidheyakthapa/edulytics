@@ -18,7 +18,7 @@ export async function updateMasteryForStudent(studentId, answers) {
       [topicId],
     );
 
-    if (paramsRows.length == 0) continue;
+    if (paramsRows.length === 0) continue;
 
     const params = paramsRows[0];
 

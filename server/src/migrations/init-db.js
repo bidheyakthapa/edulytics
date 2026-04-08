@@ -199,7 +199,6 @@ const runMigrations = async () => {
     title VARCHAR(160) NOT NULL,
     description TEXT,
     group_size INT NOT NULL,
-    use_quiz_balance BOOLEAN NOT NULL DEFAULT FALSE,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_proj_teacher FOREIGN KEY (teacher_id)

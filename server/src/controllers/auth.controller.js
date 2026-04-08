@@ -150,18 +150,27 @@ export const logout = (req, res) => {
 
 export const me = async (req, res) => {
   if (req.user.role === "STUDENT") {
-    const [semester] = await db.execute(
-      "SELECT semester_id FROM student_profiles WHERE student_id = ?",
-      [req.user.id],
-    );
-    let semesterId = semester[0].semester_id;
+    try {
+      const [semester] = await db.execute(
+        "SELECT semester_id FROM student_profiles WHERE student_id = ?",
+        [req.user.id],
+      );
+      let semesterId = semester[0].semester_id;
 
-    res.json({
-      id: req.user.id,
-      role: req.user.role,
-      semesterId,
-      loggedIn: true,
-    });
+      res.json({
+        id: req.user.id,
+        role: req.user.role,
+        semesterId,
+        loggedIn: true,
+      });
+    } catch (error) {
+      console.error("Semester id fetch error:", err);
+      return res
+        .status(500)
+        .json({
+          message: "Something went wrong while fetching the semester id",
+        });
+    }
   } else {
     res.json({
       id: req.user.id,
