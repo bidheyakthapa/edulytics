@@ -10,7 +10,7 @@ import ConfirmDialog from "../../components/ConfirmDialog.jsx";
 export default function TeacherQuizzes() {
   const { courseId, semesterId } = useTeacherContextStore();
 
-  const [mode, setMode] = useState("list"); // list | create | edit | view
+  const [mode, setMode] = useState("list");
   const [selectedQuizId, setSelectedQuizId] = useState(null);
 
   const [quizzes, setQuizzes] = useState([]);
@@ -22,7 +22,6 @@ export default function TeacherQuizzes() {
 
   const canUseSemester = Boolean(courseId) && Boolean(semesterId);
 
-  // ---------------- Fetch quizzes ----------------
   const fetchQuizzes = async () => {
     setLoading(true);
     try {
@@ -42,7 +41,6 @@ export default function TeacherQuizzes() {
     if (mode === "list") fetchQuizzes();
   }, [mode, semesterId]);
 
-  // ---------------- Delete handler ----------------
   const askDelete = (id) => {
     setDeleteId(id);
     setConfirmOpen(true);
@@ -71,7 +69,6 @@ export default function TeacherQuizzes() {
     setDeleteId(null);
   };
 
-  // ---------------- Render modes ----------------
   if (mode === "create") {
     return (
       <CreateQuiz
@@ -106,7 +103,6 @@ export default function TeacherQuizzes() {
     return <ViewQuiz quizId={selectedQuizId} onBack={() => setMode("list")} />;
   }
 
-  // ---------------- Default list view ----------------
   return (
     <div>
       <div className="flex items-start justify-between gap-3">
@@ -170,7 +166,6 @@ export default function TeacherQuizzes() {
                     </span>
                   </div>
 
-                  {/* Actions */}
                   <div className="mt-4 flex items-center gap-2">
                     <button
                       onClick={() => {

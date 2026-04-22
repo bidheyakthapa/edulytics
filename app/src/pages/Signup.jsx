@@ -5,6 +5,29 @@ import axios from "axios";
 import AuthShell from "../components/AuthShell.jsx";
 import { useSignupStore } from "../store/signupStore.js";
 
+const validateName = (name) => {
+  const trimmed = name.trim();
+  if (!trimmed) return "Name is required";
+  if (!/^[a-zA-Z ]+$/.test(trimmed))
+    return "Name can only contain letters and spaces";
+  if (trimmed.length < 2) return "Name must be at least 2 characters";
+  return "";
+};
+
+const validateEmail = (email) => {
+  const trimmed = email.trim();
+  if (!trimmed) return "Email is required";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed))
+    return "Please enter a valid email address";
+  return "";
+};
+
+const validatePassword = (password) => {
+  if (!password) return "Password is required";
+  if (password.length < 6) return "Password must be at least 6 characters";
+  return "";
+};
+
 function Slider({ label, value, onChange }) {
   return (
     <div>
@@ -33,17 +56,34 @@ export default function Signup() {
   const { step, form, setField, next, prev, reset } = useSignupStore();
   const [loading, setLoading] = useState(false);
 
+  const markTouched = (field) => setTouched((s) => ({ ...s, [field]: true }));
+
+  const errors = useMemo(
+    () => ({
+      name: validateName(form.name),
+      email: validateEmail(form.email),
+      password: validatePassword(form.password),
+    }),
+    [form.name, form.email, form.password],
+  );
+
   const [courses, setCourses] = useState([]);
   const [semesters, setSemesters] = useState([]);
 
   const [loadingCourses, setLoadingCourses] = useState(false);
   const [loadingSemesters, setLoadingSemesters] = useState(false);
 
+  const [touched, setTouched] = useState({
+    name: false,
+    email: false,
+    password: false,
+  });
+
   const isStudent = form.role === "STUDENT";
 
   const canGoStep2 = useMemo(() => {
-    return form.name.trim() && form.email.trim() && form.password.length >= 6;
-  }, [form.name, form.email, form.password]);
+    return !errors.name && !errors.email && !errors.password;
+  }, [errors]);
 
   const canSubmit = useMemo(() => {
     if (!canGoStep2) return false;
@@ -200,12 +240,15 @@ export default function Signup() {
               <input
                 value={form.name}
                 onChange={(e) => setField("name", e.target.value)}
+                onBlur={() => markTouched("name")}
                 type="text"
-                required
                 className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 outline-none
-                           focus:ring-2 focus:ring-primary-100 focus:border-primary-500"
+               focus:ring-2 focus:ring-primary-100 focus:border-primary-500"
                 placeholder="Your name"
               />
+              {touched.name && errors.name && (
+                <p className="mt-1 text-xs text-red-600">{errors.name}</p>
+              )}
             </div>
 
             <div>
@@ -213,12 +256,15 @@ export default function Signup() {
               <input
                 value={form.email}
                 onChange={(e) => setField("email", e.target.value)}
+                onBlur={() => markTouched("email")}
                 type="email"
-                required
                 className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 outline-none
-                           focus:ring-2 focus:ring-primary-100 focus:border-primary-500"
+               focus:ring-2 focus:ring-primary-100 focus:border-primary-500"
                 placeholder="you@example.com"
               />
+              {touched.email && errors.email && (
+                <p className="mt-1 text-xs text-red-600">{errors.email}</p>
+              )}
             </div>
 
             <div>
@@ -226,13 +272,15 @@ export default function Signup() {
               <input
                 value={form.password}
                 onChange={(e) => setField("password", e.target.value)}
+                onBlur={() => markTouched("password")}
                 type="password"
-                required
-                minLength={6}
                 className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 outline-none
-                           focus:ring-2 focus:ring-primary-100 focus:border-primary-500"
+               focus:ring-2 focus:ring-primary-100 focus:border-primary-500"
                 placeholder="min 6 characters"
               />
+              {touched.password && errors.password && (
+                <p className="mt-1 text-xs text-red-600">{errors.password}</p>
+              )}
             </div>
 
             {!isStudent ? (

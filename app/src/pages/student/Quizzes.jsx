@@ -5,11 +5,14 @@ import QuizCard from "./quizzes/QuizCard.jsx";
 import AttemptQuiz from "./quizzes/AttemptQuiz.jsx";
 import ViewResult from "./quizzes/ViewResult.jsx";
 
-export default function StudentQuizzes() {
+const FILTERS = ["All", "New", "Done"];
+
+export default function Quizzes() {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [attemptingQuizId, setAttemptingQuizId] = useState(null);
   const [viewingResultQuizId, setViewingResultQuizId] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("All");
 
   const fetchQuizzes = async () => {
     setLoading(true);
@@ -29,11 +32,16 @@ export default function StudentQuizzes() {
     fetchQuizzes();
   }, []);
 
-  // when student finishes or cancels, go back to list
   const handleAttemptDone = () => {
     setAttemptingQuizId(null);
-    fetchQuizzes(); // refresh so attempted status updates
+    fetchQuizzes();
   };
+
+  const filtered = quizzes.filter((q) => {
+    if (activeFilter === "New") return Number(q.attemptCount) === 0;
+    if (activeFilter === "Done") return Number(q.attemptCount) > 0;
+    return true;
+  });
 
   if (attemptingQuizId) {
     return (
@@ -63,7 +71,27 @@ export default function StudentQuizzes() {
         </p>
       </div>
 
-      <div className="mt-6">
+      {!loading && quizzes.length > 0 && (
+        <div className="mt-4 flex gap-2">
+          {FILTERS.map((f) => (
+            <button
+              key={f}
+              onClick={() => setActiveFilter(f)}
+              type="button"
+              className={`rounded-xl px-4 py-1.5 text-sm font-medium transition cursor-pointer
+                ${
+                  activeFilter === f
+                    ? "bg-primary-600 text-white"
+                    : "border border-slate-200 text-slate-600 hover:bg-slate-50"
+                }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div className="mt-4">
         {loading ? (
           <div className="text-sm text-slate-600">Loading quizzes...</div>
         ) : quizzes.length === 0 ? (
@@ -73,9 +101,20 @@ export default function StudentQuizzes() {
               Your teacher hasn't assigned any quizzes yet.
             </div>
           </div>
+        ) : filtered.length === 0 ? (
+          <div className="rounded-2xl border border-slate-100 bg-slate-50 p-6">
+            <div className="font-medium text-slate-800">
+              No {activeFilter.toLowerCase()} quizzes
+            </div>
+            <div className="mt-1 text-sm text-slate-600">
+              {activeFilter === "New"
+                ? "You've attempted all available quizzes!"
+                : "You haven't attempted any quizzes yet."}
+            </div>
+          </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
-            {quizzes.map((quiz) => (
+            {filtered.map((quiz) => (
               <QuizCard
                 key={quiz.id}
                 quiz={quiz}

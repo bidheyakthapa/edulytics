@@ -21,11 +21,11 @@ export default function WeakTopicsBar({ topics }) {
               <span className="font-medium text-slate-700">
                 {topic.topic_name}
               </span>
-              <span className="text-red-500 font-medium">{pct}%</span>
+              <span className="text-green-500 font-medium">{pct}%</span>
             </div>
             <div className="mt-2 h-1.5 w-full rounded-full bg-slate-100">
               <div
-                className="h-1.5 rounded-full bg-red-400 transition-all duration-500"
+                className="h-1.5 rounded-full bg-green-400 transition-all duration-500"
                 style={{ width: `${pct}%` }}
               />
             </div>

@@ -14,7 +14,6 @@ export default function QuizQuestionsStep({
 }) {
   const active = questions[activeIndex];
 
-  // ---------------- Question navigation ----------------
   const goPrev = () => {
     if (activeIndex > 0) setActiveIndex(activeIndex - 1);
   };
@@ -24,7 +23,6 @@ export default function QuizQuestionsStep({
       setActiveIndex(activeIndex + 1);
       return;
     }
-    // if last question -> create a new one
     setQuestions((prev) => [...prev, createEmptyQuestion()]);
     setActiveIndex(questions.length);
   };
@@ -33,18 +31,15 @@ export default function QuizQuestionsStep({
     if (questions.length <= 1) return;
 
     setQuestions((prev) => prev.filter((_, idx) => idx !== activeIndex));
-    // keep index in bounds
     setActiveIndex((prev) => Math.max(0, Math.min(prev, questions.length - 2)));
   };
 
-  // ---------------- Update question fields ----------------
   const setQuestionField = (key, value) => {
     setQuestions((prev) =>
       prev.map((q, idx) => (idx === activeIndex ? { ...q, [key]: value } : q)),
     );
   };
 
-  // ---------------- Options helpers ----------------
   const setOptionText = (optionIndex, value) => {
     setQuestions((prev) =>
       prev.map((q, idx) => {
@@ -95,7 +90,6 @@ export default function QuizQuestionsStep({
         const removedWasCorrect = q.options[optionIndex]?.is_correct;
         let options = q.options.filter((_, i) => i !== optionIndex);
 
-        // if you deleted the correct one, set first option as correct (simple rule)
         if (removedWasCorrect) {
           options = options.map((o, i) => ({ ...o, is_correct: i === 0 }));
         }
@@ -155,7 +149,6 @@ export default function QuizQuestionsStep({
           </select>
         </Field>
 
-        {/* Question text */}
         <Field label="Question">
           <input
             value={active.question_text}
@@ -166,7 +159,6 @@ export default function QuizQuestionsStep({
           />
         </Field>
 
-        {/* Options */}
         <div>
           <div className="text-sm font-medium text-slate-700">Options</div>
 
@@ -219,7 +211,6 @@ export default function QuizQuestionsStep({
           </button>
         </div>
 
-        {/* Footer controls */}
         <div className="mt-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <button

@@ -37,7 +37,6 @@ export default function ViewResult({ quizId, onBack }) {
 
   return (
     <div>
-      {/* Header */}
       <div className="flex items-center gap-3">
         <button
           onClick={onBack}
@@ -55,7 +54,6 @@ export default function ViewResult({ quizId, onBack }) {
         </div>
       </div>
 
-      {/* Score summary */}
       <div
         className={`mt-5 rounded-2xl border p-4 text-center
           ${
@@ -78,7 +76,6 @@ export default function ViewResult({ quizId, onBack }) {
         </div>
       </div>
 
-      {/* Per question breakdown */}
       <div className="mt-5 space-y-3">
         {questions.map((q, i) => (
           <div
@@ -90,7 +87,6 @@ export default function ViewResult({ quizId, onBack }) {
                   : "border-red-100 bg-white"
               }`}
           >
-            {/* Question text */}
             <div className="flex items-start gap-2">
               {q.is_correct ? (
                 <FiCheckCircle className="mt-0.5 shrink-0 text-green-500" />
@@ -102,9 +98,7 @@ export default function ViewResult({ quizId, onBack }) {
               </span>
             </div>
 
-            {/* Answer info */}
             <div className="mt-3 space-y-1 pl-6">
-              {/* What they picked */}
               <div className="text-xs text-slate-500">
                 Your answer:{" "}
                 <span
@@ -118,7 +112,6 @@ export default function ViewResult({ quizId, onBack }) {
                 </span>
               </div>
 
-              {/* Correct answer — only show if they got it wrong */}
               {!q.is_correct && (
                 <div className="text-xs text-slate-500">
                   Correct answer:{" "}
@@ -132,7 +125,6 @@ export default function ViewResult({ quizId, onBack }) {
         ))}
       </div>
 
-      {/* Back button */}
       <div className="mt-6">
         <button
           onClick={onBack}

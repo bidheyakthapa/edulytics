@@ -9,7 +9,6 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // stores selected option per question: { [question_id]: selected_option_id }
   const [answers, setAnswers] = useState({});
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -19,7 +18,6 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
 
   const timerRef = useRef(null);
 
-  // ── fetch quiz questions from backend ─────────────────────────────────────
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
@@ -40,12 +38,11 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
     fetchQuiz();
   }, [quizId]);
 
-  // ── countdown timer ───────────────────────────────────────────────────────
   useEffect(() => {
     if (timeLeft === null || result) return;
 
     if (timeLeft <= 0) {
-      handleSubmit(true); // auto submit when time runs out
+      handleSubmit(true);
       return;
     }
 
@@ -56,12 +53,10 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
     return () => clearTimeout(timerRef.current);
   }, [timeLeft, result]);
 
-  // ── select an option for a question ──────────────────────────────────────
   const selectOption = (questionId, optionId) => {
     setAnswers((prev) => ({ ...prev, [questionId]: optionId }));
   };
 
-  // ── submit quiz ───────────────────────────────────────────────────────────
   const handleSubmit = async (isAutoSubmit = false) => {
     if (submitting) return;
 
@@ -79,8 +74,6 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
 
     setSubmitting(true);
 
-    // only send questions the student actually answered
-    // backend handles unanswered ones as incorrect automatically
     const payload = Object.entries(answers).map(
       ([question_id, selected_option_id]) => ({
         question_id: Number(question_id),
@@ -105,12 +98,10 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
     }
   };
 
-  // ── loading ───────────────────────────────────────────────────────────────
   if (loading) {
     return <div className="text-sm text-slate-600">Loading quiz...</div>;
   }
 
-  // ── result screen ─────────────────────────────────────────────────────────
   if (result) {
     return <ResultScreen result={result} quiz={quiz} onDone={onDone} />;
   }
@@ -121,7 +112,6 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
 
   return (
     <div>
-      {/* Header with title and timer */}
       <div className="flex items-start justify-between gap-3">
         <div>
           <h1 className="text-lg font-semibold text-slate-800">{quiz.title}</h1>
@@ -132,7 +122,6 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
         <TimerBadge timeLeft={timeLeft} />
       </div>
 
-      {/* Progress bar */}
       <div className="mt-4 h-1.5 w-full rounded-full bg-slate-100">
         <div
           className="h-1.5 rounded-full bg-primary-500 transition-all duration-300"
@@ -143,7 +132,6 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
         {totalAnswered} of {questions.length} answered
       </p>
 
-      {/* Question card */}
       <div className="mt-5 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
         <div className="text-sm font-semibold text-slate-800">
           Q{activeIndex + 1}. {activeQuestion.question_text}
@@ -172,7 +160,6 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
         </div>
       </div>
 
-      {/* Navigation */}
       <div className="mt-5 flex items-center justify-between">
         <button
           onClick={() => setActiveIndex((i) => Math.max(0, i - 1))}
@@ -183,7 +170,6 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
           Previous
         </button>
 
-        {/* dots for quick jumping between questions */}
         <div className="hidden sm:flex items-center gap-1.5">
           {questions.map((q, i) => (
             <button
@@ -223,7 +209,6 @@ export default function AttemptQuiz({ quizId, onDone, onCancel }) {
         )}
       </div>
 
-      {/* Cancel link at bottom */}
       <div className="mt-6 border-t border-slate-100 pt-4">
         <button
           onClick={onCancel}

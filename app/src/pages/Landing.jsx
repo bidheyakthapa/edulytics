@@ -6,7 +6,6 @@ export default function Landing() {
   const { user, loading } = useAuthStore();
   const navigate = useNavigate();
 
-  // Auto-redirect if already logged in
   useEffect(() => {
     if (!loading && user) {
       navigate(user.role === "TEACHER" ? "/teacher" : "/student", {

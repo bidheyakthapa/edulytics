@@ -8,7 +8,6 @@ export const getTeacherDashboard = async (req, res) => {
   }
 
   try {
-    // total students in semester
     const [[{ studentCount }]] = await db.execute(
       `SELECT COUNT(*) AS studentCount
        FROM student_profiles
@@ -16,7 +15,6 @@ export const getTeacherDashboard = async (req, res) => {
       [semesterId],
     );
 
-    // total quizzes created by this teacher in this semester
     const [[{ quizCount }]] = await db.execute(
       `SELECT COUNT(*) AS quizCount
        FROM quizzes
@@ -24,7 +22,6 @@ export const getTeacherDashboard = async (req, res) => {
       [req.user.id, semesterId],
     );
 
-    // total topics created by this teacher in this semester
     const [[{ topicCount }]] = await db.execute(
       `SELECT COUNT(*) AS topicCount
        FROM topics
@@ -32,7 +29,6 @@ export const getTeacherDashboard = async (req, res) => {
       [req.user.id, semesterId],
     );
 
-    // class average mastery across all topics in this semester
     const [[{ avgMastery }]] = await db.execute(
       `SELECT AVG(stm.p_know) AS avgMastery
        FROM student_topic_mastery stm
@@ -41,7 +37,6 @@ export const getTeacherDashboard = async (req, res) => {
       [req.user.id, semesterId],
     );
 
-    // last 5 quiz attempts in this semester
     const [recentAttempts] = await db.execute(
       `SELECT
         u.name AS student_name,
@@ -59,7 +54,6 @@ export const getTeacherDashboard = async (req, res) => {
       [semesterId, req.user.id],
     );
 
-    // bottom 3 topics by average mastery
     const [weakTopics] = await db.execute(
       `SELECT
         t.name AS topic_name,
@@ -107,7 +101,6 @@ export const getStudentDashboard = async (req, res) => {
 
     const { semester_id } = profile;
 
-    // total quizzes available and how many attempted
     const [[quizStats]] = await db.execute(
       `SELECT
         COUNT(DISTINCT q.id) AS totalQuizzes,
@@ -119,7 +112,6 @@ export const getStudentDashboard = async (req, res) => {
       [studentId, semester_id],
     );
 
-    // overall mastery average + strongest and weakest topic
     const [masteryRows] = await db.execute(
       `SELECT stm.p_know, t.name AS topic_name
        FROM student_topic_mastery stm

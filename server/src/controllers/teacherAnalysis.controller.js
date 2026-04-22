@@ -18,7 +18,8 @@ export const getTopicAnalysis = async (req, res) => {
        LEFT JOIN student_topic_mastery stm ON stm.topic_id = t.id
        WHERE t.semester_id = ? AND t.teacher_id = ?
        GROUP BY t.id
-       ORDER BY avg_mastery ASC`,
+       ORDER BY avg_mastery IS NULL ASC, 
+       avg_mastery ASC`,
       [semesterId, req.user.id],
     );
 
@@ -42,7 +43,10 @@ export const getStudentAnalysis = async (req, res) => {
        FROM users u
        JOIN student_profiles sp ON sp.student_id = u.id
        WHERE sp.semester_id = ?
-       ORDER BY u.name ASC`,
+       ORDER BY (
+        SELECT COUNT(*) FROM student_topic_mastery 
+        WHERE student_id = u.id
+       ) DESC, u.name ASC`,
       [semesterId],
     );
 

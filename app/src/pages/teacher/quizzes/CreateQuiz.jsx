@@ -14,39 +14,30 @@ export default function CreateQuiz({
   semesterId,
   onCancel,
   onCreated,
-
-  // NEW props for edit
   editMode = false,
   quizId = null,
 }) {
-  // 1) wizard step
   const [step, setStep] = useState(1);
 
-  // 2) topics for dropdown
   const [topics, setTopics] = useState([]);
   const [loadingTopics, setLoadingTopics] = useState(false);
 
-  // 3) edit lock state
   const [attemptCount, setAttemptCount] = useState(0);
   const structureLocked = editMode && attemptCount > 0;
 
-  // 4) quiz meta
   const [meta, setMeta] = useState({
     title: "",
     description: "",
     time_limit_min: 10,
   });
 
-  // 5) questions state
   const [questions, setQuestions] = useState([createEmptyQuestion()]);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // 6) loading quiz when editing
   const [loadingQuiz, setLoadingQuiz] = useState(false);
 
   const totalSteps = structureLocked ? 1 : 3;
 
-  // ---------- load topics ----------
   useEffect(() => {
     const loadTopics = async () => {
       if (!canUseSemester) return;
@@ -68,7 +59,6 @@ export default function CreateQuiz({
     loadTopics();
   }, [canUseSemester, semesterId]);
 
-  // ---------- load quiz for edit ----------
   useEffect(() => {
     const loadQuiz = async () => {
       if (!editMode || !quizId) return;
@@ -83,7 +73,6 @@ export default function CreateQuiz({
 
         setAttemptCount(Number(ac || 0));
 
-        // hydrate meta
         setMeta({
           title: quiz.title || "",
           description: quiz.description || "",
@@ -93,7 +82,6 @@ export default function CreateQuiz({
           ),
         });
 
-        // hydrate questions
         setQuestions(
           (qs || []).map((q) => ({
             topic_id: String(q.topic_id ?? ""),
@@ -116,10 +104,8 @@ export default function CreateQuiz({
     };
 
     loadQuiz();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editMode, quizId]);
 
-  // ---------- step validation ----------
   const canGoNextFromDetails = useMemo(() => {
     return meta.title.trim().length >= 2 && Number(meta.time_limit_min) >= 1;
   }, [meta.title, meta.time_limit_min]);
@@ -143,7 +129,6 @@ export default function CreateQuiz({
     return null;
   };
 
-  // ---------- submit ----------
   const [saving, setSaving] = useState(false);
 
   const submitCreate = async () => {
@@ -165,7 +150,7 @@ export default function CreateQuiz({
             is_correct: o.is_correct,
           })),
         })),
-      }; // do nothing
+      };
 
       await axios.post("/api/quizzes", payload, { withCredentials: true });
       toast.success("Quiz created!");
@@ -178,7 +163,6 @@ export default function CreateQuiz({
   };
 
   const submitEdit = async () => {
-    // if structure is locked, only meta can be saved
     setSaving(true);
     try {
       const metaPayload = {
@@ -235,7 +219,6 @@ export default function CreateQuiz({
     return submitCreate();
   };
 
-  // ---------- UI guards ----------
   if (!canUseSemester) {
     return (
       <div>
@@ -293,7 +276,6 @@ export default function CreateQuiz({
         </button>
       </div>
 
-      {/* Stepper */}
       {!structureLocked && (
         <div className="mt-4 flex gap-2">
           <StepPill active={step === 1}>Details</StepPill>
@@ -302,7 +284,6 @@ export default function CreateQuiz({
         </div>
       )}
 
-      {/* Step content */}
       {step === 1 && (
         <QuizDetailsStep
           meta={meta}

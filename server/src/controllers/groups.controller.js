@@ -352,3 +352,23 @@ export const getMyGroup = async (req, res) => {
     return res.status(500).json({ message: "Failed to fetch your group" });
   }
 };
+
+export const deleteProject = async (req, res) => {
+  const { id: projectId } = req.params;
+
+  try {
+    const [result] = await db.execute(
+      `DELETE FROM projects WHERE id = ? AND teacher_id = ?`,
+      [projectId, req.user.id],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    return res.status(200).json({ message: "Project deleted successfully" });
+  } catch (error) {
+    console.error("deleteProject error:", error);
+    return res.status(500).json({ message: "Failed to delete project" });
+  }
+};

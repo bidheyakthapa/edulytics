@@ -2,8 +2,6 @@ import db from "../db.js";
 import { updateKnowledge } from "../utils/bkt.js";
 
 export async function updateMasteryForStudent(studentId, answers) {
-  // answers = [{ topic_id, is_correct }, ...]
-
   const grouped = {};
 
   for (const ans of answers) {

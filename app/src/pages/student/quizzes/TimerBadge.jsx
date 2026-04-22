@@ -7,7 +7,6 @@ export default function TimerBadge({ timeLeft }) {
   const seconds = timeLeft % 60;
   const formatted = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
-  // turns red when under 1 minute
   const isUrgent = timeLeft <= 60;
 
   return (

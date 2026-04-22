@@ -6,6 +6,7 @@ import { useTeacherContextStore } from "../../../store/teacherContextStore.js";
 import ProjectCard from "./ProjectCard.jsx";
 import GroupView from "./GroupView.jsx";
 import CreateProjectModal from "./CreateProjectModal.jsx";
+import ConfirmDialog from "../../../components/ConfirmDialog.jsx";
 
 export default function TeacherGroups() {
   const { semesterId } = useTeacherContextStore();
@@ -14,6 +15,25 @@ export default function TeacherGroups() {
   const [loading, setLoading] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [viewingProjectId, setViewingProjectId] = useState(null);
+  const [projectToDelete, setProjectToDelete] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const confirmDelete = async () => {
+    if (!projectToDelete) return;
+    setDeleting(true);
+    try {
+      await axios.delete(`/api/groups/projects/${projectToDelete.id}`, {
+        withCredentials: true,
+      });
+      toast.success("Project deleted");
+      setProjectToDelete(null);
+      fetchProjects();
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to delete project");
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   const fetchProjects = async () => {
     if (!semesterId) return;
@@ -59,8 +79,6 @@ export default function TeacherGroups() {
     );
   }
 
-  console.log(openCreate);
-
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -100,6 +118,7 @@ export default function TeacherGroups() {
                 key={project.id}
                 project={project}
                 onOpen={() => setViewingProjectId(project.id)}
+                onDelete={() => setProjectToDelete(project)}
               />
             ))}
           </div>
@@ -116,6 +135,16 @@ export default function TeacherGroups() {
           onClose={() => setOpenCreate(false)}
         />
       )}
+
+      <ConfirmDialog
+        open={Boolean(projectToDelete)}
+        title="Delete project?"
+        message={`This will delete "${projectToDelete?.title}" and all its groups. This cannot be undone.`}
+        confirmText="Delete"
+        onCancel={() => setProjectToDelete(null)}
+        onConfirm={confirmDelete}
+        loading={deleting}
+      />
     </div>
   );
 }

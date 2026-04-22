@@ -64,7 +64,6 @@ export default function TeacherDashboard() {
         Overview of your class this semester.
       </p>
 
-      {/* Stats row */}
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Students" value={stats.studentCount} />
         <StatCard label="Quizzes" value={stats.quizCount} />
@@ -72,7 +71,6 @@ export default function TeacherDashboard() {
         <StatCard label="Avg Mastery" value={avgPct} sub="across all topics" />
       </div>
 
-      {/* Recent attempts */}
       <div className="mt-8">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-slate-700">
@@ -82,7 +80,6 @@ export default function TeacherDashboard() {
         <RecentAttempts attempts={recentAttempts} />
       </div>
 
-      {/* Weak topics */}
       <div className="mt-8">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-slate-700">

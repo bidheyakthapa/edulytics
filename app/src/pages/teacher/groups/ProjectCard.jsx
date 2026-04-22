@@ -1,7 +1,12 @@
-import { FiUsers, FiChevronRight } from "react-icons/fi";
+import { FiUsers, FiChevronRight, FiTrash2 } from "react-icons/fi";
 
-export default function ProjectCard({ project, onOpen }) {
+export default function ProjectCard({ project, onOpen, onDelete }) {
   const hasGroups = Number(project.group_count) > 0;
+
+  const handleDeleteClick = (e) => {
+    e.stopPropagation();
+    onDelete();
+  };
 
   return (
     <div
@@ -10,7 +15,7 @@ export default function ProjectCard({ project, onOpen }) {
                  hover:border-primary-200 hover:shadow-md transition cursor-pointer"
     >
       <div className="flex items-start justify-between gap-3">
-        <div>
+        <div className="flex-1 min-w-0">
           <div className="font-semibold text-slate-800">{project.title}</div>
           {project.description && (
             <p className="mt-1 text-sm text-slate-500 line-clamp-2">
@@ -18,7 +23,19 @@ export default function ProjectCard({ project, onOpen }) {
             </p>
           )}
         </div>
-        <FiChevronRight className="mt-1 shrink-0 text-slate-400" />
+
+        <div className="flex items-center gap-1 shrink-0">
+          <button
+            onClick={handleDeleteClick}
+            type="button"
+            aria-label="Delete project"
+            className="rounded-lg p-2 text-slate-400 hover:bg-red-50
+                       hover:text-red-600 transition cursor-pointer"
+          >
+            <FiTrash2 />
+          </button>
+          <FiChevronRight className="text-slate-400" />
+        </div>
       </div>
 
       <div className="mt-4 flex items-center gap-4 text-xs text-slate-500">

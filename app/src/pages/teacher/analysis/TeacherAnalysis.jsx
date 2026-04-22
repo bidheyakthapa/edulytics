@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useTeacherContextStore } from "../../../store/teacherContextStore.js";
 import TopicBar from "./TopicBar.jsx";
 import StudentGrid from "./StudentGrid.jsx";
+import TopicList from "./TopicList.jsx";
 
 export default function TeacherAnalysis() {
   const { semesterId } = useTeacherContextStore();
@@ -66,17 +67,7 @@ export default function TeacherAnalysis() {
         <h2 className="text-sm font-semibold text-slate-700">
           Topic Mastery — Class Average
         </h2>
-        {topics.length === 0 ? (
-          <div className="mt-3 rounded-2xl border border-slate-100 bg-slate-50 p-5 text-sm text-slate-500">
-            No mastery data yet for this semester.
-          </div>
-        ) : (
-          <div className="mt-3 space-y-3">
-            {topics.map((topic) => (
-              <TopicBar key={topic.topic_id} topic={topic} />
-            ))}
-          </div>
-        )}
+        <TopicList topics={topics} />
       </div>
 
       <div className="mt-8">

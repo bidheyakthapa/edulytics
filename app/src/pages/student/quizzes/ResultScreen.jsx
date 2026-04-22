@@ -12,7 +12,6 @@ export default function ResultScreen({ result, quiz, onDone }) {
       <h1 className="text-lg font-semibold text-slate-800">Quiz Complete</h1>
 
       <div className="mt-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm text-center">
-        {/* icon */}
         <div
           className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full
             ${isPassing ? "bg-green-50" : "bg-amber-50"}`}

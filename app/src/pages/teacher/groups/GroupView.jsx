@@ -10,8 +10,8 @@ import {
 } from "@dnd-kit/core";
 import { FiArrowLeft, FiRefreshCw } from "react-icons/fi";
 
-// each student card is draggable
 import { useDraggable, useDroppable } from "@dnd-kit/core";
+import { useEffect } from "react";
 
 function StudentChip({ student }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -87,8 +87,7 @@ export default function GroupView({ projectId, onBack }) {
     }
   };
 
-  // fetch on mount
-  useState(() => {
+  useEffect(() => {
     fetchGroups();
   }, [projectId]);
 
@@ -109,7 +108,6 @@ export default function GroupView({ projectId, onBack }) {
     }
   };
 
-  // find which group a student belongs to
   const findStudentGroup = (studentId) => {
     return groups.find((g) =>
       g.members.some((m) => String(m.id) === String(studentId)),
@@ -124,11 +122,9 @@ export default function GroupView({ projectId, onBack }) {
     const draggedStudentId = active.id;
     const droppedOnGroupId = over.id;
 
-    // find the group the dragged student is currently in
     const fromGroup = findStudentGroup(draggedStudentId);
     if (!fromGroup) return;
 
-    // if dropped on the same group do nothing
     if (String(fromGroup.id) === String(droppedOnGroupId)) return;
 
     const toGroup = groups.find(
@@ -136,15 +132,11 @@ export default function GroupView({ projectId, onBack }) {
     );
     if (!toGroup) return;
 
-    // we need to swap — pick the first member of the target group
-    // teacher dragged student A onto a group column, we swap with first member
     if (toGroup.members.length === 0) {
       toast.error("Cannot swap with an empty group");
       return;
     }
 
-    // find student B — the one being swapped out from target group
-    // we swap dragged student with whoever is first in target group
     const studentA = fromGroup.members.find(
       (m) => String(m.id) === String(draggedStudentId),
     );
@@ -160,7 +152,6 @@ export default function GroupView({ projectId, onBack }) {
         { withCredentials: true },
       );
 
-      // optimistic UI update
       setGroups((prev) =>
         prev.map((g) => {
           if (g.id === fromGroup.id) {

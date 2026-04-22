@@ -30,7 +30,6 @@ export default function QuizReviewStep({
         </button>
       </div>
 
-      {/* quiz summary */}
       <div className="mt-5 rounded-2xl border border-slate-100 bg-slate-50 p-4">
         <div className="font-semibold text-slate-800">
           {meta.title || "(No title)"}
@@ -47,7 +46,6 @@ export default function QuizReviewStep({
         </div>
       </div>
 
-      {/* questions preview */}
       <div className="mt-5 grid gap-3">
         {questions.map((q, i) => (
           <div
@@ -87,7 +85,6 @@ export default function QuizReviewStep({
         ))}
       </div>
 
-      {/* actions */}
       <div className="mt-6 flex justify-end gap-2">
         <button
           onClick={onEdit}

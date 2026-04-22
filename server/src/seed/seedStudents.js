@@ -66,7 +66,6 @@ const seedStudents = async () => {
   for (const name of students) {
     const email = toEmail(name);
 
-    // check if already exists
     const [existing] = await connection.execute(
       `SELECT id FROM users WHERE email = ?`,
       [email],

@@ -13,14 +13,12 @@ export default function TeacherTopics() {
   const [topics, setTopics] = useState([]);
   const [loadingList, setLoadingList] = useState(false);
 
-  // modal state
   const [openForm, setOpenForm] = useState(false);
-  const [mode, setMode] = useState("create"); // create | edit
+  const [mode, setMode] = useState("create");
   const [activeTopic, setActiveTopic] = useState(null);
   const [name, setName] = useState("");
   const [saving, setSaving] = useState(false);
 
-  // delete confirm
   const [openDelete, setOpenDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [topicToDelete, setTopicToDelete] = useState(null);
@@ -48,7 +46,6 @@ export default function TeacherTopics() {
   useEffect(() => {
     setTopics([]);
     if (semesterId) fetchTopics();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [semesterId]);
 
   const openCreate = () => {
@@ -211,7 +208,6 @@ export default function TeacherTopics() {
         )}
       </div>
 
-      {/* floating + button (mobile) */}
       <button
         onClick={openCreate}
         className="sm:hidden fixed bottom-6 right-6 h-12 w-12 rounded-full bg-primary-600 text-white
@@ -222,7 +218,6 @@ export default function TeacherTopics() {
         <FiPlus className="text-xl" />
       </button>
 
-      {/* Add/Edit modal */}
       <Modal
         open={openForm}
         title={mode === "create" ? "Add Topic" : "Edit Topic"}
@@ -262,7 +257,6 @@ export default function TeacherTopics() {
         </form>
       </Modal>
 
-      {/* Delete confirm */}
       <ConfirmDialog
         open={openDelete}
         title="Delete topic?"

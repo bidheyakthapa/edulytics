@@ -8,6 +8,7 @@ import {
   getProjectGroups,
   swapStudents,
   getMyGroup,
+  deleteProject,
 } from "../controllers/groups.controller.js";
 
 const router = express.Router();
@@ -25,6 +26,12 @@ router.get(
   authMiddleware,
   requireRole("TEACHER"),
   getProjectGroups,
+);
+router.delete(
+  "/projects/:id",
+  authMiddleware,
+  requireRole("TEACHER"),
+  deleteProject,
 );
 router.put(
   "/projects/:id/swap",

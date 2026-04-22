@@ -1,23 +1,23 @@
 import { useState } from "react";
-import MasteryDot from "./MasteryDot.jsx";
+import TopicBar from "./TopicBar.jsx";
 import { FiSearch, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 3;
 
-export default function StudentGrid({ students }) {
+export default function TopicList({ topics }) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
-  if (students.length === 0) {
+  if (topics.length === 0) {
     return (
       <div className="mt-3 rounded-2xl border border-slate-100 bg-slate-50 p-5 text-sm text-slate-500">
-        No students found for this semester.
+        No mastery data yet for this semester.
       </div>
     );
   }
 
-  const filtered = students.filter((s) =>
-    s.student_name.toLowerCase().includes(search.toLowerCase()),
+  const filtered = topics.filter((t) =>
+    t.topic_name.toLowerCase().includes(search.toLowerCase()),
   );
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
@@ -38,63 +38,30 @@ export default function StudentGrid({ students }) {
         <input
           value={search}
           onChange={(e) => handleSearch(e.target.value)}
-          placeholder="Search student..."
+          placeholder="Search topic..."
           className="flex-1 text-sm outline-none text-slate-700 placeholder-slate-400"
         />
       </div>
 
-      <div className="mt-3 overflow-x-auto rounded-2xl border border-slate-100">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-slate-100 bg-slate-50">
-              <th className="px-4 py-3 text-left font-medium text-slate-600">
-                Student
-              </th>
-              {students[0].topics.map((t) => (
-                <th
-                  key={t.topic_id}
-                  className="px-4 py-3 text-center font-medium text-slate-600 whitespace-nowrap"
-                >
-                  {t.topic_name}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {paginated.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={students[0].topics.length + 1}
-                  className="px-4 py-6 text-center text-slate-400 text-sm"
-                >
-                  No students match your search.
-                </td>
-              </tr>
-            ) : (
-              paginated.map((student, i) => (
-                <tr
-                  key={student.student_id}
-                  className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}
-                >
-                  <td className="px-4 py-3 font-medium text-slate-700 whitespace-nowrap">
-                    {student.student_name}
-                  </td>
-                  {student.topics.map((t) => (
-                    <td key={t.topic_id} className="px-4 py-3 text-center">
-                      <MasteryDot p_know={t.p_know} />
-                    </td>
-                  ))}
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      <div className="mt-3 space-y-3">
+        {paginated.length === 0 ? (
+          <div
+            className="rounded-2xl border border-slate-100 bg-slate-50 p-5
+                          text-sm text-slate-500"
+          >
+            No topics match your search.
+          </div>
+        ) : (
+          paginated.map((topic) => (
+            <TopicBar key={topic.topic_id} topic={topic} />
+          ))
+        )}
       </div>
 
       {totalPages > 1 && (
         <div className="mt-3 flex items-center justify-between text-sm text-slate-500">
           <span>
-            {filtered.length} student{filtered.length !== 1 ? "s" : ""}
+            {filtered.length} topic{filtered.length !== 1 ? "s" : ""}
             {search ? ` matching "${search}"` : ""}
           </span>
 
